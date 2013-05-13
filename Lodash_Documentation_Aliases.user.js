@@ -3,7 +3,7 @@
 // @namespace   http://userscripts.org/users/delapouite
 // @description Add function aliases in TOC
 // @include     http://lodash.com/docs
-// @version     1
+// @version     2
 // ==/UserScript==
 
 // Lodash is available on this page
@@ -12,9 +12,10 @@
 var TOC = document.querySelector('div');
 _.forEach(TOC.getElementsByTagName('a'), function(a) {
 	var target = a.href.split('#')[1];
-	if (target && !_.contains(a.textContent, target.replace('_', '.'))) {
+	if (target && target !== '_' && a.textContent.trim() !== '_.' + target.replace('_', '.')) {
 		var alias = document.createElement('span');
 		alias.innerHTML = ' -> ' + target;
+		a.style.opacity = 0.5;
 		a.getElementsByTagName('code')[0].appendChild(alias);
 	}
 });
