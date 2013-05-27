@@ -10,10 +10,11 @@
 var discussionTitle = document.getElementsByClassName('discussion-topic-title');
 if (discussionTitle) {
 	discussionTitle = discussionTitle[0];
-	matches = discussionTitle.textContent.match('^Bug (\\d*) - (.*)')
+	var re = /^\[?bug (\d*)\]? (.*)/i;
+	var matches = discussionTitle.textContent.match(re);
 	if (matches[1]) {
 		// create link
 		discussionTitle.innerHTML = '<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=' + matches[1] + '">Bug ' + matches[1] + '</a>';
-		discussionTitle.innerHTML += ' - ' + matches[2];
+		discussionTitle.innerHTML += ' ' + matches[2];
 	}
 }
