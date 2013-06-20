@@ -47,7 +47,6 @@ if (notifications.length !== 0) {
 		var icon = notification.getElementsByClassName('type-icon')[0];
 		var link = notification.getElementsByTagName('a')[0];
 		var clonedIcon = icon.cloneNode();
-		clonedIcon.style.margin = '12px 6px 12px 0';
 		clonedIcon.style.cssFloat = 'left';
 		notification.insertBefore(clonedIcon, link);
 		icon.remove();
