@@ -3,7 +3,9 @@
 // @namespace   http://userscripts.org/users/delapouite
 // @description Add function aliases in TOC
 // @include     http://lodash.com/docs
-// @version     2
+// @updateURL   https://github.com/Delapouite/userscripts/raw/master/Lodash_Documentation_Aliases.user.js
+// @downloadURL https://github.com/Delapouite/userscripts/raw/master/Lodash_Documentation_Aliases.user.js
+// @version     2.1
 // ==/UserScript==
 
 // Lodash is available on this page

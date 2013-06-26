@@ -4,7 +4,9 @@
 // @description Add the number of available languages on the dropdown toggle itself
 // @include     https://developer.mozilla.org/en-US/docs/*
 // @include     https://developer.mozilla.org/fr/docs/*
-// @version     3
+// @updateURL   https://github.com/Delapouite/userscripts/raw/master/MDN_l10n_FR.user.js
+// @downloadURL https://github.com/Delapouite/userscripts/raw/master/MDN_l10n_FR.user.js
+// @version     3.1
 // ==/UserScript==
 
 document.addEventListener('DOMContentLoaded', function() {

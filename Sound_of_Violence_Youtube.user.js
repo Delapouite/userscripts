@@ -4,7 +4,9 @@
 // @description Add Youtube search links in reviews
 // @include     http://www.soundofviolence.net/articles/album/*
 // @include     http://www.soundofviolence.net/articles/single/*
-// @version     1
+// @updateURL   https://github.com/Delapouite/userscripts/raw/master/Sound_of_Violence_Youtube.user.js
+// @downloadURL https://github.com/Delapouite/userscripts/raw/master/Sound_of_Violence_Youtube.user.js
+// @version     1.1
 // ==/UserScript==
 
 var createYoutubeLink = function(artist, album) {

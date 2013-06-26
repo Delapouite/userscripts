@@ -3,7 +3,9 @@
 // @namespace   http://userscripts.org/users/delapouite
 // @description Create links from Github issues to their corresponding Bugzilla entries for the Mozilla Gaia project
 // @include     https://github.com/mozilla-b2g/gaia/*
-// @version     1
+// @updateURL   https://github.com/Delapouite/userscripts/raw/master/Bugzilla_Github_Mozilla_Gaia_Linker.user.js
+// @downloadURL https://github.com/Delapouite/userscripts/raw/master/Bugzilla_Github_Mozilla_Gaia_Linker.user.js
+// @version     1.1
 // ==/UserScript==
 
 var re = /^\[?bug (\d*)\]? (.*)/i;
