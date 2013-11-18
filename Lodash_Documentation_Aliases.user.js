@@ -16,7 +16,7 @@ var TOC = document.getElementsByTagName('div')[0],
 	main = document.querySelectorAll('body > div')[1],
 	nav = document.getElementsByTagName('h1')[0];
 
-// add faded aliases
+// add faded aliases in TOC
 _.forEach(TOC.getElementsByTagName('a'), function(a) {
 	var target = a.href.split('#')[1];
 	if (target && target !== '_' && a.textContent.trim() !== '_.' + target.replace('_', '.')) {
@@ -49,42 +49,57 @@ _.forEach(TOC.getElementsByTagName('h2'), function(h2) {
 });
 nav.appendChild(categoryLinks);
 
-// add classes for display toggling
-_.forEach(main.querySelectorAll('h3'), function(h3) {
-	h3.className = 'signature';
-});
+// add CSS classes for display toggling
+_.forEach(main.querySelectorAll('div > div > div'), function(method) {
+	// to style anchors
+	method.style.position = 'relative';
 
-_.forEach(main.querySelectorAll('ol'), function(h3) {
-	h3.className = 'IO';
-});
+	var signature = method.querySelector('h3');
+	signature.className = 'signature';
 
-_.forEach(main.querySelectorAll('p:last-of-type'), function(p) {
-	p.className = 'IO';
-});
+	// move anchors to the right
+	var anchors = method.querySelector('p:first-of-type');
+	anchors.className = 'anchor';
+	anchors.style.position = 'absolute';
+	anchors.style.top = '0.75em';
+	anchors.style.right = 0;
 
-_.forEach(main.querySelectorAll('pre'), function(pre) {
-	pre.className = 'example';
-});
+	var args = method.querySelector('ol');
+	if (args)
+		args.className = 'IO';
 
-_.forEach(main.querySelectorAll('h4'), function(h4) {
-	switch(h4.textContent.trim()) {
-		case 'Aliases':
-			h4.className = 'description';
-			break;
-		case 'Arguments':
-		case 'Returns':
-			h4.className = 'IO';
-			break;
-		case 'Example':
-			h4.className = 'example';
-			break;
-	}
-});
+	var returns = method.querySelector('p:last-of-type');
+	returns.className = 'IO returns';
 
-// remaining paragraphs
-_.forEach(main.querySelectorAll('p'), function(p) {
-	if (!p.className)
-		p.className = 'description';
+	var example = method.querySelector('pre');
+	if (example)
+		example.className = 'example';
+
+	_.forEach(method.querySelectorAll('h4'), function(h4) {
+		switch(h4.textContent.trim()) {
+			case 'Aliases':
+				h4.className = 'description';
+				break;
+			case 'Arguments':
+			case 'Returns':
+				h4.className = 'IO';
+				break;
+			case 'Example':
+				h4.className = 'example';
+				break;
+		}
+	});
+
+	// remaining paragraphs
+	_.forEach(method.querySelectorAll('p'), function(p) {
+		if (!p.className)
+			p.className = 'description';
+	});
+
+	// add return type to signature's end
+	var type = returns.textContent.trim().match(/^\((.*)\):.*/);
+	if (type)
+		signature.appendChild(document.createTextNode(' : ' + type[1]));
 });
 
 // add display checkboxes to top menu
@@ -117,8 +132,8 @@ _.forEach(labelTexts, function(labelText) {
 nav.appendChild(checkboxes);
 
 // methods count by category in TOC
-_.forEach(TOC.getElementsByTagName('div'), function(section) {
-	var entriesCount = section.getElementsByTagName('li').length,
-		aliasCount = section.getElementsByClassName('alias').length;
-	section.querySelector('h2 code').innerHTML += ' (' + (entriesCount - aliasCount) + '/' + entriesCount + ')';
+_.forEach(TOC.getElementsByTagName('div'), function(category) {
+	var entriesCount = category.getElementsByTagName('li').length,
+		aliasCount = category.getElementsByClassName('alias').length;
+	category.querySelector('h2 code').innerHTML += ' (' + (entriesCount - aliasCount) + '/' + entriesCount + ')';
 });
