@@ -5,7 +5,7 @@
 // @include     http://lodash.com/docs*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/Lodash_Documentation_Aliases.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/Lodash_Documentation_Aliases.user.js
-// @version     4.0
+// @version     4.1
 // ==/UserScript==
 
 // Lodash is available on this page
@@ -15,18 +15,6 @@
 var TOC = document.getElementsByTagName('div')[0],
 	main = document.querySelectorAll('body > div')[1],
 	nav = document.getElementsByTagName('h1')[0];
-
-// add faded aliases in TOC
-_.forEach(TOC.getElementsByTagName('a'), function(a) {
-	var target = a.href.split('#')[1];
-	if (target && target !== '_' && a.textContent.trim() !== '_.' + target.replace('_', '.')) {
-		var alias = document.createElement('span');
-		alias.innerHTML = ' -> ' + target;
-		a.style.opacity = 0.5;
-		a.className = 'alias';
-		a.getElementsByTagName('code')[0].appendChild(alias);
-	}
-});
 
 // add link to home
 var homeLink = document.createElement('a');
