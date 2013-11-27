@@ -5,7 +5,7 @@
 // @include     http://lodash.com/docs*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/Lodash_Documentation_Aliases.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/Lodash_Documentation_Aliases.user.js
-// @version     4.1
+// @version     4.2
 // ==/UserScript==
 
 // Lodash is available on this page
@@ -15,14 +15,6 @@
 var TOC = document.getElementsByTagName('div')[0],
 	main = document.querySelectorAll('body > div')[1],
 	nav = document.getElementsByTagName('h1')[0];
-
-// add link to home
-var homeLink = document.createElement('a');
-homeLink.textContent = 'Lo-Dash';
-homeLink.href = '//lodash.com';
-homeLink.style.marginRight = '0.5em';
-nav.childNodes[0].textContent = '';
-nav.insertBefore(homeLink, nav.firstChild);
 
 // build categories top menu
 var categoryLinks = document.createElement('span');
