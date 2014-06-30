@@ -6,7 +6,7 @@
 // @include     https://www.duolingo.com/*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
-// @version     1
+// @version     1.1
 // ==/UserScript==
 
 var w = unsafeWindow;
@@ -27,6 +27,8 @@ setTimeout(function() {
 		gold: w.$('.gold').length,
 		xp: w.$('.sidebar-stats strong')[0].textContent,
 		words: w.$('.sidebar-stats strong')[1].textContent,
+		currentLevel: w.$('.level-current')[0].textContent,
+		levelProgress: w.$('.language-progress-bar-small')[0].title.split(' ')[0],
 		date: Date.now()
 	};
 	if (!data[from]) {
