@@ -6,7 +6,7 @@
 // @include     https://www.duolingo.com/*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
-// @version     1.3
+// @version     1.4
 // @grant       GM_setValue
 // @grant       GM_getValue
 // ==/UserScript==
