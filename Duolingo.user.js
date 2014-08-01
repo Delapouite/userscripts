@@ -63,6 +63,26 @@ var log = function(data) {
 	console.info(JSON.stringify(data));
 };
 
+// to handle legacy / new page layouts
+
+var getXps = function() {
+	// new layout
+	var xps = $('.points strong');
+	if (xps.length) {
+		return xps[0].textContent;
+	}
+	return $('.sidebar-stats strong')[0].textContent;
+};
+
+var getWords = function() {
+	// new layout
+	var words = $('#word-count');
+	if (words.length) {
+		return words[0].textContent;
+	}
+	return $('.sidebar-stats strong')[1].textContent;
+};
+
 var scan = function() {
 	try {
 	// tree page only
@@ -80,8 +100,8 @@ var scan = function() {
 		finished: $('.skill-icon-strength').length - 1,
 		total: $('.skill-icon').length,
 		gold: $('.gold').length,
-		xp: $('.points strong')[0].textContent,
-		words: $('#word-count')[0].textContent,
+		xp: getXps(),
+		words: getWords(),
 		currentLevel: $('.level-current')[0].textContent,
 		levelProgress: $('.language-progress-bar-small')[0].title.split(' ')[0],
 		date: Date.now()
