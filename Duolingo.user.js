@@ -6,7 +6,7 @@
 // @include     https://www.duolingo.com/*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
-// @version     1.2
+// @version     1.3
 // @grant       GM_setValue
 // @grant       GM_getValue
 // ==/UserScript==
@@ -14,12 +14,53 @@
 /* globals console, document, setTimeout */
 /* globals GM_setValue, GM_getValue */
 
-// helper
+// helpers
+
 var $ = document.querySelectorAll.bind(document);
 
-var createSkillsCounters = function(counters) {
+var formatDate = function(ts){
+	var d = new Date(ts);
+	return d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+};
+
+// data already filtered by from
+var createSkillsCounters = function(data, to) {
+	// dropdown
+	var languageChoices = $('.language-choice');
+	for (var i = 0; i < languageChoices.length; i++) {
+		var li = languageChoices[i];
+		var d = data[li.dataset.value];
+		// data not yet computed
+		if(!d) {
+			continue;
+		}
+		var span = document.createElement('span');
+		span.textContent = d.finished + '/' + d.total + '(' + d.gold + ') ' + formatDate(d.date);
+		li.appendChild(span);
+	}
+	// in the main title
+	var current = data[to];
 	var h1 = $('h1')[0];
-	h1.textContent += ' ' + counters.finished + ' / ' + counters.total + ' (' + counters.gold + ')';
+	h1.textContent += ' ' + current.finished + ' / ' + current.total + ' (' + current.gold + ')';
+};
+
+// to export data
+var log = function(data) {
+	Object.keys(data).forEach(function(from) {
+		console.info('===', from, '===');
+		Object.keys(data[from]).forEach(function(to) {
+			var c = data[from][to];
+			console.info(
+				from + ' -> ' + to,
+				c.finished + '/' + c.total + '(' + c.gold + ')',
+				c.xp + 'xp',
+				c.words + 'w',
+				c.currentLevel + 'Lvl(' + c.levelProgress + ')',
+				formatDate(c.date)
+			);
+		});
+	});
+	console.info(JSON.stringify(data));
 };
 
 var scan = function() {
@@ -55,23 +96,10 @@ var scan = function() {
 	GM_setValue('data', JSON.stringify(data));
 
 	// enhance UI
-	createSkillsCounters(counters);
+	createSkillsCounters(data[from], to);
 
-	// log
-	Object.keys(data).forEach(function(from) {
-		Object.keys(data[from]).forEach(function(to) {
-			var c = data[from][to];
-			console.info(
-				from + ' -> ' + to,
-				c.finished + '/' + c.total + '(' + c.gold + ')',
-				c.xp + 'xp',
-				c.words + 'w',
-				c.currentLevel + 'Lvl(' + c.levelProgress + ')'
-			);
-		});
-	});
-
-	console.info(JSON.stringify(data));
+	// export in console
+	log(data);
 
 	} catch (ex) {
 		console.error(ex);
