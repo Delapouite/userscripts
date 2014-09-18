@@ -31,7 +31,7 @@ var createSkillsCounters = function(data, to) {
 		var li = languageChoices[i];
 		var d = data[li.dataset.value];
 		// data not yet computed
-		if(!d) {
+		if (!d) {
 			continue;
 		}
 		var span = document.createElement('span');
@@ -95,15 +95,18 @@ var scan = function() {
 
 	var from = document.body.classList[0].split('-')[1];
 	var to = $('span.flag')[0].classList[2].split('-')[1];
+	var levelProgress = $('.language-progress-bar-small')[0].title.split(' ')[0];
 	var counters = {
 		// - 1 to remove the one in sidebar
 		finished: $('.skill-icon-strength').length - 1,
 		total: $('.skill-icon').length,
 		gold: $('.gold').length,
 		xp: getXps(),
+		currentXp: levelProgress.split('/')[0],
+		ceilXp: levelProgress.split('/')[1],
 		words: getWords(),
 		currentLevel: $('.level-current')[0].textContent,
-		levelProgress: $('.language-progress-bar-small')[0].title.split(' ')[0],
+		levelProgress: levelProgress,
 		date: Date.now()
 	};
 
