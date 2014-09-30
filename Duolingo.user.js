@@ -6,9 +6,10 @@
 // @include     https://www.duolingo.com/*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
-// @version     1.5
+// @version     1.6
 // @grant       GM_setValue
 // @grant       GM_getValue
+// @grant       GM_registerMenuCommand
 // ==/UserScript==
 
 /* globals console, document, setTimeout */
@@ -46,11 +47,17 @@ var createSkillsCounters = function(data, to) {
 
 // to export data
 var log = function(data) {
+	var totalXp = 0;
 	Object.keys(data).forEach(function(from) {
 		console.info('===', from, '===');
 		Object.keys(data[from]).forEach(function(to) {
 			var c = data[from][to];
-			console.info(
+			totalXp += +c.xp;
+
+			var obsolete = Date.now() - c.date > 1000 * 60 * 24 * 7;
+			var logLevel = obsolete ? 'error' : 'info';
+
+			console[logLevel](
 				from + ' -> ' + to,
 				c.finished + '/' + c.total + '(' + c.gold + ')',
 				c.xp + 'xp',
@@ -60,6 +67,8 @@ var log = function(data) {
 			);
 		});
 	});
+	console.info('Total xp', totalXp);
+	// export
 	console.info(JSON.stringify(data));
 };
 
@@ -131,3 +140,5 @@ var scan = function() {
 
 // wait for full async load
 setTimeout(scan, 6000);
+
+GM_registerMenuCommand('Scan Tree', scan, 'S');
