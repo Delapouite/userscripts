@@ -6,14 +6,14 @@
 // @include     https://www.duolingo.com/*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
-// @version     1.6
+// @version     1.7
 // @grant       GM_setValue
 // @grant       GM_getValue
 // @grant       GM_registerMenuCommand
 // ==/UserScript==
 
 /* globals console, document, setTimeout */
-/* globals GM_setValue, GM_getValue */
+/* globals GM_setValue, GM_getValue, GM_registerMenuCommand */
 
 // helpers
 
@@ -106,10 +106,13 @@ var scan = function() {
 	var to = $('span.flag')[0].classList[2].split('-')[1];
 	var levelProgress = $('.language-progress-bar-small')[0].title.split(' ')[0];
 	var counters = {
+		// skills
 		// - 1 to remove the one in sidebar
 		finished: $('.skill-icon-strength').length - 1,
 		total: $('.skill-icon').length,
 		gold: $('.gold').length,
+		locked: $('.skill-icon.locked').length,
+		// xp
 		xp: getXps(),
 		currentXp: levelProgress.split('/')[0],
 		ceilXp: levelProgress.split('/')[1],
