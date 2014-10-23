@@ -10,16 +10,18 @@
 // @grant       GM_setValue
 // @grant       GM_getValue
 // @grant       GM_registerMenuCommand
+// @grant       unsafeWindow
 // ==/UserScript==
 
 /* globals console, document, setTimeout */
-/* globals GM_setValue, GM_getValue, GM_registerMenuCommand */
+/* globals GM_setValue, GM_getValue, GM_registerMenuCommand, unsafeWindow */
+
+'use strict';
 
 // helpers
-
 var $ = document.querySelectorAll.bind(document);
 
-var formatDate = function(ts){
+var formatDate = function(ts) {
 	var d = new Date(ts);
 	return d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
 };
@@ -74,15 +76,6 @@ var log = function(data) {
 
 // to handle legacy / new page layouts
 
-var getXps = function() {
-	// new layout
-	var xps = $('.points strong');
-	if (xps.length) {
-		return xps[0].textContent;
-	}
-	return $('.sidebar-stats strong')[0].textContent;
-};
-
 var getWords = function() {
 	// new layout
 	var words = $('#word-count');
@@ -92,10 +85,53 @@ var getWords = function() {
 	return $('.sidebar-stats strong')[1].textContent;
 };
 
+// skills
+
+var getFinished = function() {
+	// - 1 to remove the one in sidebar
+	return $('.skill-icon-strength').length - 1;
+};
+
+var getTotal = function() {
+	return $('.skill-icon').length;
+};
+
+var getGold = function() {
+	return $('.gold').length;
+};
+
+// xps
+
+var getXps = function() {
+	// new layout
+	var xps = $('.points strong');
+	if (xps.length) {
+		return xps[0].textContent;
+	}
+	return $('.sidebar-stats strong')[0].textContent;
+};
+
+var getCurrentLevel = function() {
+	return $('.level-current')[0].textContent;
+};
+
+var getLevelProgress = function() {
+	return $('.language-progress-bar-small')[0].title.split(' ')[0];
+};
+
+var getCurrentXp = function() {
+	return levelProgress.split('/')[0];
+};
+
+var getCeilXp = function() {
+	return levelProgress.split('/')[1];
+};
+
 var scan = function() {
 	try {
+
 	// tree page only
-	if (!$('.sidebar-stats strong').length) {
+	if ($('.skill-icon').length < 3) {
 		return;
 	}
 
@@ -104,21 +140,20 @@ var scan = function() {
 
 	var from = document.body.classList[0].split('-')[1];
 	var to = $('span.flag')[0].classList[2].split('-')[1];
-	var levelProgress = $('.language-progress-bar-small')[0].title.split(' ')[0];
+
+	var duoData = unsafeWindow.duo.user.attributes.language_data[to];
+
 	var counters = {
 		// skills
-		// - 1 to remove the one in sidebar
-		finished: $('.skill-icon-strength').length - 1,
-		total: $('.skill-icon').length,
-		gold: $('.gold').length,
-		locked: $('.skill-icon.locked').length,
-		// xp
-		xp: getXps(),
-		currentXp: levelProgress.split('/')[0],
-		ceilXp: levelProgress.split('/')[1],
-		words: getWords(),
-		currentLevel: $('.level-current')[0].textContent,
-		levelProgress: levelProgress,
+		finished: getFinished(),
+		total: getTotal(),
+		gold: getGold(),
+		xp: duoData.points,
+		currentXp: duoData.level_progress,
+		ceilXp: duoData.level_points,
+		words: duoData.word_count,
+		currentLevel: duoData.level,
+		levelProgress: duoData.level_progress + '/' + duoData.level_points,
 		date: Date.now()
 	};
 
@@ -142,6 +177,6 @@ var scan = function() {
 };
 
 // wait for full async load
-setTimeout(scan, 6000);
+setTimeout(scan, 4000);
 
 GM_registerMenuCommand('Scan Tree', scan, 'S');
