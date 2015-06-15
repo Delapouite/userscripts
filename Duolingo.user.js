@@ -6,7 +6,7 @@
 // @include     https://www.duolingo.com/*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/Duolingo.user.js
-// @version     1.8
+// @version     1.9
 // @grant       GM_setValue
 // @grant       GM_getValue
 // @grant       GM_registerMenuCommand
@@ -95,8 +95,7 @@ var log = function(data) {
 // skills
 
 var getFinished = function() {
-	// - 1 to remove the one in sidebar
-	return $('.skill-icon-strength').length - 1;
+	return $('.skill-icon-strength').length;
 };
 
 var getTotal = function() {
