@@ -6,7 +6,7 @@
 // @include     https://github.com/*/*/notifications
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/GitHub_Notifications.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/GitHub_Notifications.user.js
-// @version     1.0
+// @version     2.0
 // @grant       GM_setValue
 // @grant       GM_getValue
 // @grant       unsafeWindow
@@ -58,7 +58,7 @@ function addCreatedAt () {
 }
 
 function addAvatars () {
-	var repos = $('.filter-item')
+	var repos = $('.small .filter-item')
 
 	for (let r of repos) {
 		let user = r.title.split('/')[0]
