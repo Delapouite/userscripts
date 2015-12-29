@@ -2,11 +2,10 @@
 // @name        GitHub
 // @namespace   http://userscripts.org/users/delapouite
 // @description Nice additions to GitHub notifications
-// @include     https://github.com/notifications
-// @include     https://github.com/*/*/notifications
+// @include     https://github.com/*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/GitHub_Notifications.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/GitHub_Notifications.user.js
-// @version     2.0
+// @version     3.0
 // @grant       GM_setValue
 // @grant       GM_getValue
 // @grant       unsafeWindow
@@ -75,4 +74,23 @@ function addAvatars () {
 	}
 }
 
-addAvatars()
+function addNotifNav () {
+	var nav = $('.reponav')[0]
+	if (!nav) return
+
+	var a = document.createElement('a')
+	a.className = 'reponav-item'
+	a.textContent = ' Notifications'
+	a.href = `${document.location.href}/notifications`
+
+	var icon = document.createElement('span')
+	icon.className = 'octicon octicon-bell'
+
+	a.insertBefore(icon, a.firstChild)
+	nav.appendChild(a)
+}
+
+if (document.location.pathname.contains('/notifications'))
+	addAvatars()
+
+addNotifNav()
