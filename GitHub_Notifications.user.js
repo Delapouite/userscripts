@@ -5,7 +5,7 @@
 // @include     https://github.com/*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/GitHub_Notifications.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/GitHub_Notifications.user.js
-// @version     3.0
+// @version     3.1
 // @grant       GM_setValue
 // @grant       GM_getValue
 // @grant       unsafeWindow
@@ -15,29 +15,27 @@
 
 // helpers
 
-var $ = document.querySelectorAll.bind(document)
+const $ = document.querySelectorAll.bind(document)
 
-var cache = JSON.parse(GM_getValue('cache', '{}'))
+const cache = JSON.parse(GM_getValue('cache', '{}'))
 
-function save () {
-	GM_setValue('cache', JSON.stringify(cache))
-}
+const save = () => GM_setValue('cache', JSON.stringify(cache))
 
-function decorate (notif, createdAt) {
-	let s = document.createElement('strong')
+const decorate = (notif, createdAt) => {
+	const s = document.createElement('strong')
 	s.textContent = createdAt
 	notif.appendChild(s)
 }
 
 // not used yet
-function addCreatedAt () {
-	var notifications = $('.js-notification')
+const addCreatedAt = () => {
+	const notifications = $('.js-notification')
 
 	for (let n of notifications) {
-		let href = n.querySelector('.js-notification-target').href
-		let [a, b, c, owner, project, d, issueId] = href.split('/')
+		const href = n.querySelector('.js-notification-target').href
+		const [a, b, c, owner, project, d, issueId] = href.split('/')
 		issueId = issueId.split('#')[0]
-		let notifId = `${owner}/${project}/${issueId}`
+		const notifId = `${owner}/${project}/${issueId}`
 
 		if (cache[notifId]) {
 			decorate(n, cache[notifId])
@@ -56,40 +54,43 @@ function addCreatedAt () {
 	}
 }
 
-function addAvatars () {
-	var repos = $('.small .filter-item')
+const addAvatars = () => {
+	const repos = $('.small .filter-item')
 
 	for (let r of repos) {
-		let user = r.title.split('/')[0]
+		const user = r.title.split('/')[0]
 
-		let img = document.createElement('img')
-		img.style.display = 'block'
-		img.style.float = 'left'
-		img.style.height = '1.5em'
-		img.style.marginRight = '0.5em'
-		img.style.width = '1.5em'
+		const img = document.createElement('img')
+		Object.assign(img.style, {
+			display: 'block',
+			float: 'left',
+			height: '1.5em',
+			marginRight: '0.5em',
+			width: '1.5em'
+		})
 
 		img.src = `https://avatars.githubusercontent.com/${user}`
 		r.insertBefore(img, r.firstChild)
 	}
 }
 
-function addNotifNav () {
-	var nav = $('.reponav')[0]
+const addNotifNav = () => {
+	const nav = $('.reponav')[0]
 	if (!nav) return
+	
+	const [_, user, repo] = document.location.pathname.split('/')
 
-	var a = document.createElement('a')
+	const a = document.createElement('a')
 	a.className = 'reponav-item'
 	a.textContent = ' Notifications'
-	a.href = `${document.location.href}/notifications`
+	a.href = `${document.location.origin}/${user}/${repo}/notifications`
 
-	var icon = document.createElement('span')
+	const icon = document.createElement('span')
 	icon.className = 'octicon octicon-bell'
 
 	a.insertBefore(icon, a.firstChild)
 	nav.appendChild(a)
 }
-
 if (document.location.pathname.contains('/notifications'))
 	addAvatars()
 
