@@ -5,7 +5,7 @@
 // @include     https://github.com/*
 // @updateURL   https://github.com/Delapouite/userscripts/raw/master/GitHub_Notifications.user.js
 // @downloadURL https://github.com/Delapouite/userscripts/raw/master/GitHub_Notifications.user.js
-// @version     3.1
+// @version     3.2
 // @grant       GM_setValue
 // @grant       GM_getValue
 // @grant       unsafeWindow
@@ -77,7 +77,7 @@ const addAvatars = () => {
 const addNotifNav = () => {
 	const nav = $('.reponav')[0]
 	if (!nav) return
-	
+
 	const [_, user, repo] = document.location.pathname.split('/')
 
 	const a = document.createElement('a')
@@ -91,7 +91,7 @@ const addNotifNav = () => {
 	a.insertBefore(icon, a.firstChild)
 	nav.appendChild(a)
 }
-if (document.location.pathname.contains('/notifications'))
+if (document.location.pathname.includes('/notifications'))
 	addAvatars()
 
 addNotifNav()
